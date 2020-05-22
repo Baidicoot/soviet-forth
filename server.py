@@ -1,6 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 from urllib.parse import parse_qs
+from datetime import datetime
 
 def addDefn(addr, body):
     parsed = parse_qs(body)
@@ -13,7 +14,7 @@ def addDefn(addr, body):
     with open("scope.json", "w") as file:
         json.dump(scope, file)
     with open("defns.log.txt", "a") as file:
-        file.write(addr + ": " + json.dumps({name:defn}) + "\n")
+        file.write(addr + ", " + datetime.now().strftime("%m/%d/%Y, %H:%M:%S") + ": " + json.dumps({name:defn}) + "\n")
 
 class ScopeServer(BaseHTTPRequestHandler):
     def do_GET(self):
