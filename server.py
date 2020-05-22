@@ -12,7 +12,7 @@ def addDefn(addr, body):
     scope[name] = defn
     with open("scope.json", "w") as file:
         json.dump(scope, file)
-    with open("defns.log", "a") as file:
+    with open("defns.log.txt", "a") as file:
         file.write(addr + ": " + json.dumps({name:defn}) + "\n")
 
 class ScopeServer(BaseHTTPRequestHandler):
@@ -30,5 +30,5 @@ class ScopeServer(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Good POST')
 
-httpd = HTTPServer(('192.168.1.29', 80), ScopeServer)
+httpd = HTTPServer(('192.168.1.29', 8080), ScopeServer)
 httpd.serve_forever()

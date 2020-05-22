@@ -3,7 +3,7 @@ import std
 import requests
 import json
 
-ip = "http://aidan-network.duckdns.org:80"
+ip = "http://aidan-network.duckdns.org:8080"
 
 def getScope():
     r = requests.get(ip)
