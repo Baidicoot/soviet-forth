@@ -14,8 +14,42 @@ def define(id, defn):
     eval.appendScope(id, defn)
     requests.post(ip, {"name":id, "defn":defn})
 
+def parseInput(input):
+    words = []
+    curr = ""
+    quotes = 0
+
+    flags = [False]
+
+    def completeWord():
+        if (flags[0]):
+            words.append(curr)
+        flags[0] = False
+        return "'" * quotes
+
+    for c in input:
+        if (quotes < 0):
+            raise Exception("Mismatched Brackets!")
+        if (c == "{"):
+            quotes += 1
+            curr = completeWord()
+        elif (c == "}"):
+            quotes -= 1
+            curr = completeWord()
+        elif (c == " "):
+            curr = completeWord()
+        else:
+            flags[0] = True
+            curr = curr + c
+    completeWord()
+    return words
+
 def run(input):
-    ins = input.split()
+    try:
+        ins = parseInput(input)
+    except Exception as err:
+        print(err.args[0])
+        return
     state = eval.State(ins)
     while True:
         getScope()
