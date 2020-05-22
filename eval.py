@@ -3,6 +3,15 @@ import json
 scope = {}
 ops = {}
 
+class Type:
+    def __init__(self):
+        self.type = "bottom"
+
+class SymbolType(Type):
+    def __init__(self, string):
+        self.log = string
+        self.type = "symbol"
+
 def builtin(fn):
     global ops
     if (callable(fn)):
@@ -56,4 +65,4 @@ class State:
         if ins in scope:
             self.ins.call(scope[ins])
         if ins[0] == '\'':
-            self.stack.append(ins[1:])
+            self.stack.append(SymbolType(ins[1:]))

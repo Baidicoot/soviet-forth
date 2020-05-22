@@ -1,20 +1,32 @@
 import eval
+from stdtype import *
 
 @eval.builtin("print")
 def log(state, output):
-    string = state.stack.pop()
-    output.append(string)
+    item = state.stack.pop()
+    if (hasattr(item, 'log')):
+        output.append(item.log)
+    else:
+        raise Exception("typeerror")
 
 @eval.builtin(";")
 def defn(state, output):
     definition = []
-    word = state.stack.pop()
-    while (word != "|"):
-        definition.append(word)
-        word = state.stack.pop()
-    word = state.stack.pop()
-    raise Exception("define", word, definition)
+
+    item = state.stack.pop()
+    assertType(item, "symbol")
+
+    while (item.type == "symbol"):
+        definition.insert(0, item.log)
+        item = state.stack.pop()
+    
+    assertType(item, "unit")
+
+    item = state.stack.pop()
+    assertType(item, "symbol")
+
+    raise Exception("define", item.log, definition)
 
 @eval.builtin(":")
 def sep(state, output):
-    state.stack.append("|")
+    state.stack.append(UnitType())
