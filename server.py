@@ -30,5 +30,5 @@ class ScopeServer(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Good POST')
 
-httpd = HTTPServer(('localhost', 80), ScopeServer)
+httpd = HTTPServer(('192.168.1.29', 80), ScopeServer)
 httpd.serve_forever()
